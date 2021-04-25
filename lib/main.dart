@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -74,6 +75,12 @@ class CustomRaisedButton extends StatelessWidget {
 
 // --------------------- SIGN IN PAGE -------------------------------
 class SignInPage extends StatelessWidget {
+
+  Future<void> signInAnonymously() async{
+    final userCredentials = await FirebaseAuth.instance.signInAnonymously();
+    print('${userCredentials.user.uid}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,7 +189,7 @@ class SignInPage extends StatelessWidget {
             ),
             color: Colors.tealAccent,
             borderRadius: 16.0,
-            onPressed: () {},
+            onPressed: signInAnonymously,
           ),
           //  Image.asset('images/google-logo.png'),
           //  Add an image in this format ----------------------------------------------------o
