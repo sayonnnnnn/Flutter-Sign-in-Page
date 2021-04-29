@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+package:meta/meta.dart
 import 'package:flutter/material.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(SayonApp());
@@ -18,7 +19,7 @@ class SayonApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: SignInPage(),
+      home: LandingPage(), // Changing the SignInPage() (stateless widget) with LandingPage (Stateful Widget) in the root
       /*                  
             home: Container(
                 color: Colors.blue, // Returns a blue screen under the MaterialApp widget
@@ -76,9 +77,18 @@ class CustomRaisedButton extends StatelessWidget {
 // --------------------- SIGN IN PAGE -------------------------------
 class SignInPage extends StatelessWidget {
 
-  Future<void> signInAnonymously() async{
-    final userCredentials = await FirebaseAuth.instance.signInAnonymously();
-    print('${userCredentials.user.uid}');
+  const SignInPage({Key key, @required this.onSignIn});
+
+  final void Function(User) onSignIn();
+
+  Future<void> signInAnonymously() async {
+    try {
+      final userCredentials = await FirebaseAuth.instance.signInAnonymously();
+      onSignIn(userCredentials.user); // If our firebase authentication get's authenticated then, 
+      print('${userCredentials.user.uid}');
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -222,3 +232,31 @@ class SignInPage extends StatelessWidget {
   // --------------- End of signInWithGoogle() ----------------------
 }
 // ------------------End of SignInPage ------------------------------
+
+// ---------------- LandingPage -------------------------------------
+class LandingPage extends StatefulWidget {
+  @override
+  _LandingPage createState() => _LandingPage();
+}
+
+class _LandingPage extends StatelessWidget {
+
+  User _user;
+
+  void _updateUser(User user){
+    print('User ID: ${user.uid}');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_user==null){
+      return SignInPage(
+        onSignIn: (user) => _updateUser(user),
+      );  // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
+    }else{
+      return Container();   // If their is a user then  a Container will be returned...  
+    }
+  }
+}
+
+// -------------------------------------------------------------------
