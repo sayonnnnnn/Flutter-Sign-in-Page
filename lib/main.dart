@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:meta/meta.dart';
@@ -77,9 +78,9 @@ class CustomRaisedButton extends StatelessWidget {
 // --------------------- SIGN IN PAGE -------------------------------
 class SignInPage extends StatelessWidget {
 
-  const SignInPage({Key key, @required this.onSignIn});
+  const SignInPage({Key key, @required this.onSignIn}) : super(key: key) ;
 
-  final void Function(User) onSignIn();
+  final void Function(User) onSignIn;
 
   Future<void> signInAnonymously() async {
     try {
@@ -239,14 +240,14 @@ class LandingPage extends StatefulWidget {
   _LandingPage createState() => _LandingPage();
 }
 
-class _LandingPage extends StatelessWidget {
+class _LandingPage extends State<LandingPage> {
 
   User _user;
 
   void _updateUser(User user){
     print('User ID: ${user.uid}');
   }
-
+   
   @override
   Widget build(BuildContext context) {
     if (_user==null){
@@ -254,9 +255,25 @@ class _LandingPage extends StatelessWidget {
         onSignIn: (user) => _updateUser(user),
       );  // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
     }else{
-      return Container();   // If their is a user then  a Container will be returned...  
+      return HomePage();   // If their is a user then  a Container will be returned...  
     }
   }
 }
 
 // -------------------------------------------------------------------
+
+// ---------------------- HomePage ------------------------------------------
+
+class HomePage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
+      ),
+    );
+  }
+}
+
+
+// --------------------------------------------------------------------------
