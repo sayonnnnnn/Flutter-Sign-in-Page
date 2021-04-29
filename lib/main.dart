@@ -250,7 +250,9 @@ class _LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_user==null){
-      return SignInPage();  // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
+      return SignInPage(
+        onSignIn: (user) => _updateUser(user),
+      );  // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
     }else{
       return Container();   // If their is a user then  a Container will be returned...  
     }
