@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:meta/meta.dart';
@@ -247,7 +246,7 @@ class _LandingPage extends State<LandingPage> {
   void _updateUser(User user){
     print('User ID: ${user.uid}');
   }
-
+   
   @override
   Widget build(BuildContext context) {
     if (_user==null){
