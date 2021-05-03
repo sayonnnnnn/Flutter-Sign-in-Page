@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:meta/meta.dart';
@@ -21,7 +20,7 @@ class SayonApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
       ),
       home: LandingPage(), // Changing the SignInPage() (stateless widget) with LandingPage (Stateful Widget) in the root
-      /*                  
+      /*
             home: Container(
                 color: Colors.blue, // Returns a blue screen under the MaterialApp widget
             ),
@@ -85,7 +84,7 @@ class SignInPage extends StatelessWidget {
   Future<void> signInAnonymously() async {
     try {
       final userCredentials = await FirebaseAuth.instance.signInAnonymously();
-      onSignIn(userCredentials.user); // If our firebase authentication get's authenticated then, 
+      onSignIn(userCredentials.user); // If our firebase authentication get's authenticated then,
       print('${userCredentials.user.uid}');
     } catch (e) {
       print(e.toString());
@@ -247,7 +246,7 @@ class _LandingPage extends State<LandingPage> {
   void _updateUser(User user){
     print('User ID: ${user.uid}');
   }
-   
+
   @override
   Widget build(BuildContext context) {
     if (_user==null){
@@ -255,7 +254,7 @@ class _LandingPage extends State<LandingPage> {
         onSignIn: (user) => _updateUser(user),
       );  // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
     }else{
-      return HomePage();   // If their is a user then  a Container will be returned...  
+      return HomePage();   // If their is a user then  a Container will be returned...
     }
   }
 }
