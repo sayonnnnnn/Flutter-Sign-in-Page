@@ -20,7 +20,7 @@ class SayonApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
       ),
       home: LandingPage(), // Changing the SignInPage() (stateless widget) with LandingPage (Stateful Widget) in the root
-      /*
+      /*                  
             home: Container(
                 color: Colors.blue, // Returns a blue screen under the MaterialApp widget
             ),
@@ -76,8 +76,7 @@ class CustomRaisedButton extends StatelessWidget {
 
 // --------------------- SIGN IN PAGE -------------------------------
 class SignInPage extends StatelessWidget {
-
-  const SignInPage({Key key, @required this.onSignIn}) : super(key: key) ;
+  const SignInPage({Key key, @required this.onSignIn}) : super(key: key);
 
   final void Function(User) onSignIn;
 
@@ -240,21 +239,34 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPage extends State<LandingPage> {
-
   User _user;
 
-  void _updateUser(User user){
-    print('User ID: ${user.uid}');
+  // Now in general, when the user is not using the application, it doesn not get signed out automatically
+  // hence, we have to do something about the involuntary sign-out which is taking place
+  @override
+  void initState() {
+    super.initState();
+    _updateUser(FirebaseAuth.instance.currentUser);
+  }
+
+  void _updateUser(User user) {
+    //print('User ID(sayon): ${user.uid}');
+    setState(() {
+      _user = user;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_user==null){
+    if (_user == null) {
       return SignInPage(
-        onSignIn: (user) => _updateUser(user),
-      );  // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
-    }else{
-      return HomePage();   // If their is a user then  a Container will be returned...
+        onSignIn: _updateUser,
+      ); // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
+    } else {
+      return HomePage(
+        onSignOut: () {},
+        //onSignOut: (null) => _updateUser(null),
+      ); // If their is a user then  a Container will be returned...
     }
   }
 }
@@ -263,16 +275,39 @@ class _LandingPage extends State<LandingPage> {
 
 // ---------------------- HomePage ------------------------------------------
 
-class HomePage extends StatelessWidget{
+class HomePage extends StatelessWidget {
+  final VoidCallback onSignOut;
+  const HomePage({Key key, @required this.signOut}) : super(key: key);
+
+  Future<void> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      onSignOut();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
+            ),
+            onPressed: signOut,
+          ),
+        ],
       ),
     );
   }
 }
-
 
 // --------------------------------------------------------------------------
