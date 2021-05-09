@@ -276,36 +276,36 @@ class _LandingPageState extends State<LandingPage> {
 // ---------------------- HomePage ------------------------------------------
 
 class HomePage extends StatelessWidget {
-  final VoidCallback onSignOut;
-  //const SignInPage({Key key, @required this.onSignIn}) : super(key: key);
-  const HomePage({Key key, @required this.signOut}) : super(key: key);
+  // final VoidCallback onSignOut;
+  // const SignInPage({Key key, @required this.onSignIn}) : super(key: key);
+  // const HomePage({Key key, @required this.signOut}) : super(key: key);
 
-  Future<void> signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      onSignOut();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+  // Future<void> signOut() async {
+  //   try {
+  //     await FirebaseAuth.instance.signOut();
+  //     onSignOut();
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
-//         actions: <Widget>[
-//           FlatButton(
-//             child: Text(
-//               'Logout',
-//               style: TextStyle(
-//                 fontSize: 18.0,
-//                 color: Colors.white,
-//               ),
-//             ),
-//             onPressed: signOut,
-//           ),
-//         ],
+        // actions: <Widget>[
+        //   FlatButton(
+        //     child: Text(
+        //       'Logout',
+        //       style: TextStyle(
+        //         fontSize: 18.0,
+        //         color: Colors.white,
+        //       ),
+        //     ),
+        //     //onPressed: null, //signOut,
+        //   ),
+        // ],
       ),
     );
   }
