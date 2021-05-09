@@ -235,10 +235,10 @@ class SignInPage extends StatelessWidget {
 // ---------------- LandingPage -------------------------------------
 class LandingPage extends StatefulWidget {
   @override
-  _LandingPage createState() => _LandingPage();
+  _LandingPageState createState() => _LandingPageState();
 }
 
-class _LandingPage extends State<LandingPage> {
+class _LandingPageState extends State<LandingPage> {
   User _user;
 
   // Now in general, when the user is not using the application, it doesn not get signed out automatically
@@ -264,9 +264,9 @@ class _LandingPage extends State<LandingPage> {
       ); // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
     } else {
       return HomePage(
-        onSignOut: () {},
-        //onSignOut: (null) => _updateUser(null),
-      ); // If their is a user then  a Container will be returned...
+
+          //onSignOut: (null) => _updateUser(null),
+          ); // If their is a user then  a Container will be returned...
     }
   }
 }
@@ -277,6 +277,7 @@ class _LandingPage extends State<LandingPage> {
 
 class HomePage extends StatelessWidget {
   final VoidCallback onSignOut;
+  //const SignInPage({Key key, @required this.onSignIn}) : super(key: key);
   const HomePage({Key key, @required this.signOut}) : super(key: key);
 
   Future<void> signOut() async {
