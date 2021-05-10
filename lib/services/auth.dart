@@ -8,8 +8,8 @@ class Auth {
     return userCredentials.user;
   }
 
-  Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
-  }
+  // Future<void> signOut() async {
+  //  await FirebaseAuth.instance.signOut();
+  // }
 }
 

@@ -2,12 +2,46 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
+// import 'services/auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'dart: async';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(SayonApp());
 }
+
+/*
+@override
+Future<User> signInWithGoogle() async {
+  final googleSignIn = GoogleSignIn(); 
+  final googleUser = await FirebaseAuth.instance.googleSignIn.signIn();
+  
+  // If the user is able to sign in successfully
+  if (googleUser != null) {
+    // Taking the sign in token
+    final googleAuth = await googleUser.authentication;
+    if (googleAuth.idToken != null) {
+      final userCeredential = await FirebaseAuth.instance.signInWithCredential(GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+      accessToken: googleAuth.accessToken, 
+      ));
+      return userCredential.user;
+    } else {
+      throw FirebaseAuthException(
+        code: 'ERROR_MISSING_GOOGLE_ID_TOKEN',
+        message: 'Google ID token was not found & hence, FirebaseAuthException() has been called.'
+      );
+    }
+  } else {
+    throw FirebaseAuthException(
+      code: 'ERROR_ABORTED_BY_USER',
+      message: 'FirebaseAuthException() has been called as the sign-in is aborted.',
+    ); 
+  }
+}
+*/ 
 
 // SayonApp is a class
 class SayonApp extends StatelessWidget {
@@ -82,13 +116,54 @@ class SignInPage extends StatelessWidget {
 
   Future<void> signInAnonymously() async {
     try {
+      // final userCredential = await FirebaseAuth.instance.signInAnonymously();
       final userCredentials = await FirebaseAuth.instance.signInAnonymously();
-      onSignIn(userCredentials.user); // If our firebase authentication get's authenticated then,
-      print('${userCredentials.user.uid}');
+      return userCredentials.user;
+      // onSignIn(userCredentials.user); // If our firebase authentication get's authenticated then,
+      // print('${userCredentials.user.uid}');
+      // return userCredential.user;
     } catch (e) {
       print(e.toString());
     }
   }
+
+// ------------------ signInWithGoogle() --------------------------
+  
+  Future<User> signInWithGoogle() async {
+    try {
+        final googleSignIn = GoogleSignIn(); 
+        final googleUser = await FirebaseAuth.instance.googleSignIn.signIn();
+  
+        // If the user is able to sign in successfully
+        if (googleUser != null) {
+        // Taking the sign in token
+          final googleAuth = await googleUser.authentication;
+          if (googleAuth.idToken != null) {
+            final userCeredential = await FirebaseAuth.instance.signInWithCredential(GoogleAuthProvider.credential(
+              idToken: googleAuth.idToken,
+              accessToken: googleAuth.accessToken, 
+            ));
+            return userCredential.user;
+          }else {
+            throw FirebaseAuthException(
+              code: 'ERROR_MISSING_GOOGLE_ID_TOKEN',
+              message: 'Google ID token was not found & hence, FirebaseAuthException() has been called.'
+            );
+          }
+        }
+        else {
+          throw FirebaseAuthException(
+            code: 'ERROR_ABORTED_BY_USER',
+            message: 'FirebaseAuthException() has been called as the sign-in is aborted.',
+          ); 
+        }
+
+    }catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // --------------- End of signInWithGoogle() ----------------------
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +215,7 @@ class SignInPage extends StatelessWidget {
             ),
             color: Colors.white,
             borderRadius: 16.0,
-            onPressed: () {},
+            onPressed: signInWithGoogle,
           ),
           SizedBox(height: 8.0),
           CustomRaisedButton(
@@ -224,21 +299,16 @@ class SignInPage extends StatelessWidget {
   }
   // ---------------- End of buildContainer() -----------------------
 
-  // ------------------ signInWithGoogle() --------------------------
-
-  void signInWithGoogle() {}
-
-  // --------------- End of signInWithGoogle() ----------------------
 }
 // ------------------End of SignInPage ------------------------------
 
 // ---------------- LandingPage -------------------------------------
 class LandingPage extends StatefulWidget {
   @override
-  _LandingPageState createState() => _LandingPageState();
+  _LandingPage createState() => _LandingPage();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _LandingPage extends State<LandingPage> {
   User _user;
 
   // Now in general, when the user is not using the application, it doesn not get signed out automatically
@@ -250,7 +320,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void _updateUser(User user) {
-    //print('User ID(sayon): ${user.uid}');
+    print('User ID(sayon): ${user.uid}');
     setState(() {
       _user = user;
     });
@@ -260,10 +330,10 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     if (_user == null) {
       return SignInPage(
-        onSignIn: _updateUser,
+        onSignIn: (user) => _updateUser(user),
       ); // If thier is no user in the firebase, then the user will be redirected to the Sign in Page
     } else {
-      return HomePage(
+      return SignInPage(
 
           //onSignOut: (null) => _updateUser(null),
           ); // If their is a user then  a Container will be returned...
