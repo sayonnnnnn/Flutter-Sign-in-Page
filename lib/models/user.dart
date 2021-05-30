@@ -1,6 +1,6 @@
-class Userr {
+class Userrr {
   final String uid; 
-  const Userr({this.uid});
+  Userrr({this.uid});
 }
 
          

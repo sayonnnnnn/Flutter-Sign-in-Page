@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/screens/wrapper.dart'; 
-import 'package:firebase_core/firebase_core.dart'; 
 
 // Future<void> main() async {            
 //   WidgetsFlutterBinding.ensureInitialized();
 //   await Firebase.initializeApp();
 //   runApp(SayonApp());
-// } 
 
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp();
   runApp(SayonApp());
 }
 
@@ -19,8 +17,7 @@ Future<void> main() async {
 // SayonApp is a class
 class SayonApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    //return Container(); // Returns a black screen
+  Widget build(BuildContext context) {        
     return MaterialApp(
       title: 'Flutter App 1.2!!',
       theme: ThemeData(

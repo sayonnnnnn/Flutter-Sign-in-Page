@@ -6,7 +6,7 @@ class Home extends StatelessWidget {
     return Container(
       height: 300,
       child: Column(
-        children: [
+        children: [    
           Container(
             height: 70,
             child: Center(
@@ -36,12 +36,10 @@ class Home extends StatelessWidget {
 
 class PersistentBottomSheetDemo extends StatefulWidget {
   @override
-  _PersistentBottomSheetDemoState createState() =>
-      _PersistentBottomSheetDemoState();
+  _PersistentBottomSheetDemoState createState() => _PersistentBottomSheetDemoState();
 }
 
-class _PersistentBottomSheetDemoState
-    extends State<PersistentBottomSheetDemo> {
+class _PersistentBottomSheetDemoState extends State<PersistentBottomSheetDemo> {
   VoidCallback _showBottomSheetCallback;
 
   @override

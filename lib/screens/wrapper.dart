@@ -6,11 +6,9 @@ import 'package:hello_world/screens/Home/home.dart';
 
 class Wrapper extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-
-    final user = Provider.of<Userr>(context);
-    print(user);
-    
+  Widget build(BuildContext context) {   
+    final user = Provider.of<Userrr>(context);
+    print(user);    
     // return either the Home or Authenticate widget
     if (user == null){
       return Authenticate();
@@ -18,4 +16,4 @@ class Wrapper extends StatelessWidget {
       return PersistentBottomSheetDemo();
     }    
   }
-}
+}   

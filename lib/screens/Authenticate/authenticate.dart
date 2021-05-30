@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart'; 
-import 'package:hello_world/screens/sign-in/sign-in.dart';
+import 'package:hello_world/screens/authenticate/register.dart';
+import 'package:hello_world/screens/authenticate/sign_in.dart'; 
+import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
   @override
@@ -7,10 +8,19 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
-  @override 
+
+  bool showSignIn = true;
+  void toggleView(){
+    //print(showSignIn.toString());
+    setState(() => showSignIn = !showSignIn);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SignInPage(),
-    );
+    if (showSignIn) {
+      return SignIn(toggleView:  toggleView);
+    } else {
+      return Register(toggleView:  toggleView);
+    }
   }
 }

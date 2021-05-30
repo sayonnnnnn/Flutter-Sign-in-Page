@@ -1,34 +1,33 @@
-import 'package:flutter/material.dart'; 
-import 'package:hello_world/models/user.dart';  
-import 'package:firebase_auth/firebase_auth.dart'; 
-import 'package:provider/provider.dart'; 
-import 'package:cloud_firestore/cloud_firestore.dart';       
+import 'package:hello_world/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance; 
-  
-  Userr _userFromFirebaseUser(User user){
-    try{
-      return user != null ? Userr(uid: user.uid): null; 
-    }catch(e) {
-      print(e.toString()); 
-    }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // create user obj based on firebase user
+  Userrr _userFromFirebase(FirebaseUser user) {
+    if(user==null){
+      return null;
+    }else {
+      return Userrr(uid: user.uid); 
+    }        
   }
 
-   // auth change user stream
-  Stream<Userr> get user {
-    return _auth.authStateChanges().map((User user) => _userFromFirebaseUser(user));
-      //.map(_userFromFirebaseUser);
+  // auth change user stream
+  Stream<Userrr> get user {
+    return _auth.authStateChanges().map(_userFromFirebase);
+      //.map((FirebaseUser user) => _userFromFirebaseUser(user));
   }
 
   // sign in anon
   Future signInAnon() async {
     try {
       UserCredential result = await _auth.signInAnonymously();
-      User user = result.user;
-      return _userFromFirebaseUser(user);
+      FirebaseUser user = result.user;
+      return _userFromFirebase(user);
     } catch (e) {
-      print(e.toString());   
+      print(e.toString());
       return null;
     }
   }
@@ -37,7 +36,7 @@ class AuthService {
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      User user = result.user;
+      FirebaseUser user = result.user;
       return user;
     } catch (error) {
       print(error.toString());
@@ -49,8 +48,8 @@ class AuthService {
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      User user = result.user;
-      return _userFromFirebaseUser(user);
+      FirebaseUser user = result.user;
+      return _userFromFirebase(user);
     } catch (error) {
       print(error.toString());
       return null;
@@ -66,4 +65,5 @@ class AuthService {
       return null;
     }
   }
+
 }
